@@ -18,6 +18,10 @@ class App extends Component {
   updateInput = e => {
     this.setState({ [e.target.name] : e.target.value})
   }
+  addFriend = () => {
+    const addFriend = {friend: this.state.friend}
+    this.props.createFriend(newFriend);
+  }
 
   render() {
     return (
@@ -42,7 +46,7 @@ class App extends Component {
 	       name="email"
 	       placeholder="email"
 	        />
-      <button> Add friend </button>
+      <button onClick={this.addFriend}> Add friend </button>
       {this.props.friends.map((friend, i)=> {
         return (
           <div key= {i}> {friend.name} </div>

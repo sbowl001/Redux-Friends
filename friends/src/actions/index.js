@@ -6,15 +6,31 @@ export const FETCH_ERROR = 'FETCH_ERROR';
 
 export const getFriends = () => {
     return(dispatch) => {
-        axios.get("http://localhost:5000/api/friends").then(response => {
-          dispatch({ type: FETCHED_FRIENDS, payload: response.data})
-        //   .catch( error => {
-        //       dispatch({ type: FETCH_ERROR, error: "Error fetching friends"})
-        //   })
-        });
+        axios.get("http://localhost:5000/api/friends")
+        .then(response => {
+            setTimeout(() => {
+              dispatch({
+                type: FETCHED_FRIENDS,
+                payload: response.data
+              })}, 2000)
+            })
+         
+          .catch( err => {
+              dispatch({ type: FETCH_ERROR, error: "Error fetching friends"})
+          })
+        
     }
 }
 
-export const createAvenger = () => {
+export const createFriend = (friend) => {
+    return dispatch => {
+        axios.post('http://localhost:5000/api/friends', friend)
+        .then(response => {
+            console.log(response)
+        })
+        .catch( ()=> {
+            dispatch({type: FETCH_ERROR, error: 'ERROR creating Friend'})
+        })
+    }
 
 }
