@@ -1,21 +1,68 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {getFriends} from '../actions';
+import {connect} from 'react-redux';
 
 class App extends Component {
+  state ={
+    name: '', 
+    age: '',
+    email: ''
+  };
+
+  componentDidMount() {
+    this.props.getFriends();
+  }
+
+  updateInput = e => {
+    this.setState({ [e.target.name] : e.target.value})
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <input 
+      type= "text"
+      placeholder="friend name"
+      value={this.state.name}
+      name = "name"
+      onChange= {this.updateInput}/>
+      <input
+	    onChange={this.updateInput}
+	    value={this.state.age}
+	   type="text"
+	    name="age"
+	    placeholder="age"
+	     />
+    	<input
+	     onChange={this.updateInput}
+	       value={this.state.email}
+	        type="text"
+	       name="email"
+	       placeholder="email"
+	        />
+      <button> Add friend </button>
+      {this.props.friends.map((friend, i)=> {
+        return (
+          <div key= {i}> {friend.name} </div>
+        )
+      })
+    }
+      <img src ={logo} className="App-logo" alt="logo" />
+         
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  console.log('In APP', state);
+  return {
+    friends : state.friends,
+    error: state.error,
+    fetching: state.fetching
+  };
+};
+
+export default connect(mapStateToProps, {getFriends})(App);
